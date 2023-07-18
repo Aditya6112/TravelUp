@@ -51,7 +51,6 @@ const validateCampground = (req, res, next) => {
     } else {
         next();
     }
-
 }
 
 app.get('/', (req, res) => {
