@@ -7,7 +7,7 @@ const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const Campground = require('./models/campground');
 const joi = require('joi');
-const { campgroundSchema } = require('./schema.js');
+const { campgroundSchema, reviewSchema } = require('./schema.js');
 const { error } = require('console');
 const Joi = require('joi');
 main().catch(err => {
@@ -88,6 +88,15 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
+}))
+
+app.post('/campgrounds/:id/reviews', catchAsync(async (req, res) => {
+    const campground = await Campground.findById(req.params.id);
+    const review = new Review(req.body.review);
+    campground.reviews.push(review);
+    await review.save();
+    await campground.save();
+    res.redirect(`/campgrounds/${campground._id}`);
 }))
 
 app.all('*', (req, res, next) => {
