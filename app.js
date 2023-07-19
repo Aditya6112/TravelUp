@@ -9,7 +9,8 @@ const Campground = require('./models/campground');
 const joi = require('joi');
 const { campgroundSchema, reviewSchema } = require('./schema.js');
 const { error } = require('console');
-const Joi = require('joi');
+const Review = require('./models/review');
+//const Joi = require('joi');
 main().catch(err => {
     console.log("OH NO MONGO CONNECTION ERROR!!!")
     console.log(err)
