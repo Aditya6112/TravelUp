@@ -12,7 +12,7 @@
                     <label class="form-label" for="location">Location</label>
                     <input class="form-control" type="text" id="location" name="campground[location]" required>
                 </div>
-                <input type="file" name="image" id="">
+                
                 <div class="mb-3">
                     <label class="form-label" for="price">Campground Price</label>
                     <div class="input-group">
@@ -28,6 +28,13 @@
                         required></textarea>
                 </div>
                 <div class="mb-3">
+                    <label for="" class="mb-2">Upload Images</label>
+                    <div class="input-group mb-3 mu-3">
+                        <input type="file" class="form-control" id="inputGroupFile02" name="image" multiple>
+                        <label class="input-group-text" for="inputGroupFile02">Choose file(s)</label>
+                    </div>
+                </div>
+                <div class="mb-3">
                     <button class="btn btn-success">Add Campground</button>
                 </div>
             </form>
@@ -36,7 +43,7 @@
     </div>
 
     <script>
-        (function() {
+        (function () {
             'use strict'
 
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
