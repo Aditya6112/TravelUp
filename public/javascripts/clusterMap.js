@@ -1,6 +1,4 @@
-campgrounds
-
-mapboxgl.accessToken=process.env.MAPBOX_TOKEN;
+mapboxgl.accessToken='pk.eyJ1IjoiYWRpdHlhcmFqNzIiLCJhIjoiY2xreHF4M2RuMDNzcDNqcXU1azdwYnI4bCJ9.MHqRiRsVLWxVysoCPQp2ng';
 const map = new mapboxgl.Map({
     container: 'cluster-map',
     // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
