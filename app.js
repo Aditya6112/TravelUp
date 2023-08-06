@@ -7,7 +7,10 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
+
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
+
 const flash = require('connect-flash')
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
@@ -24,13 +27,15 @@ const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 
+const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelp-camp';
+
 main().catch(err => {
     console.log("OH NO MONGO CONNECTION ERROR!!!")
     console.log(err)
 });
 async function main() {
     mongoose.set('strictQuery', true);
-    await mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
+    await mongoose.connect(dbUrl)
         .then(() => {
             //console.log("MONGO CONNECTION OPEN!!!")
             const db = mongoose.connection;
@@ -61,7 +66,20 @@ app.use(mongoSanitize({
     replaceWith: '_',
 }));
 
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: 'thisshouldbeabettersecret!'
+    }
+});
+
+store.on("error", function(e){
+    console.log("SESSION STORE ERROR!",e);
+})
+
 const sessionConfig = {
+    store,
     name: 'myuser',
     secret: 'thisshouldbeabettersecret!',
     resave: false,
@@ -115,7 +133,7 @@ app.use(
                 "'self'",
                 "blob:",
                 "data:",
-                "https://res.cloudinary.com/dm7wpzlhw/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT! 
+                "https://res.cloudinary.com/dm7wpzlhw/",
                 "https://images.unsplash.com/",
             ],
             fontSrc: ["'self'", ...fontSrcUrls],
